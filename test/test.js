@@ -1,9 +1,9 @@
-const app = require('../app.js')
+const simple = require('../simple.js')
 const assert = require('chai').assert
 let simpleScore1, simpleScore2
 
 function fitSimpleModel(model, cb) {
-    model.fit(app.xs, app.ys, {
+    model.fit(simple.xs,simple.ys, {
     epochs: 100,
     callbacks: {
       onEpochEnd: (epoch, log) => {
@@ -24,12 +24,12 @@ describe('Tests run', function () {
 
 describe('Simple model behaves', () => {
   it('App model should be a thing', () => {
-    assert(typeof app.simpleModel === 'object')
-    assert(app.simpleModel.model.loss === 'meanSquaredError')
+    assert(typeof simple.model === 'object')
+    assert(simple.model.model.loss === 'meanSquaredError')
   })
 
   it('Evaluate before training', async () => {
-    const t = await app.simpleModel.evaluate(app.xs, app.ys, {verbose: true})
+    const t = await simple.model.evaluate(simple.xs, simple.ys, {verbose: true})
     t.data().then(res => {
       // evaluate loss before training
       simpleScore1 = res[0]
@@ -39,8 +39,8 @@ describe('Simple model behaves', () => {
   })
 
   it('Evaluate model', () => {
-    fitSimpleModel(app.simpleModel, async res => {
-      const t = await app.simpleModel.evaluate(app.xs, app.ys, {verbose: true})
+    fitSimpleModel(simple.model, async res => {
+      const t = await simple.model.evaluate(simple.xs, simple.ys, {verbose: true})
       t.data().then(res => {
         // evaluate loss after training
         simpleScore2 = res[0]

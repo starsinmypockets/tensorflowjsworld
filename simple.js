@@ -10,7 +10,7 @@ model.add(tf.layers.dense({units: 1, activation: 'linear'}))
 model.compile({optimizer: 'sgd', loss: 'meanSquaredError'})
 
 module.exports = {
-  simpleModel: model,
+  model: model,
   xs: tf.randomNormal([100, 10]),
   ys: tf.randomNormal([100, 1])
 }
