@@ -1,7 +1,5 @@
-const tf = require('@tensorflow/tfjs')
-
-// Load the binding:
 require('@tensorflow/tfjs-node')
+const tf = require('@tensorflow/tfjs')
 
 // Train a simple model:
 const model = tf.sequential()
@@ -11,6 +9,8 @@ model.compile({optimizer: 'sgd', loss: 'meanSquaredError'})
 
 module.exports = {
   model: model,
-  xs: tf.randomNormal([100, 10]),
-  ys: tf.randomNormal([100, 1])
+  a: tf.variable(tf.scalar(Math.random())),
+  b: tf.variable(tf.scalar(Math.random())),
+  c: tf.variable(tf.scalar(Math.random())),
+  d: tf.variable(tf.scalar(Math.random()))
 }

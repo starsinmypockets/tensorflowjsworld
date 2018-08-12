@@ -7,7 +7,7 @@ function fitSimpleModel(model, cb) {
     epochs: 100,
     callbacks: {
       onEpochEnd: (epoch, log) => {
-        console.log(`Epoch ${epoch}: loss = ${log.loss}`)
+//        console.log(`Epoch ${epoch}: loss = ${log.loss}`)
       },
       onTrainEnd: (a,b,c,d,e,f,g) => {
         cb()
