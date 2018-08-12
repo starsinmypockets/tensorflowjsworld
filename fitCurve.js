@@ -12,5 +12,16 @@ module.exports = {
   a: tf.variable(tf.scalar(Math.random())),
   b: tf.variable(tf.scalar(Math.random())),
   c: tf.variable(tf.scalar(Math.random())),
-  d: tf.variable(tf.scalar(Math.random()))
+  d: tf.variable(tf.scalar(Math.random())),
+  x: tf.variable(tf.scalar(Math.random())),
+
+  predict: (a,b,c,d,x) => {
+    return tf.tidy(() => {
+      // ax^3 + bx^2 + cx + d
+      return a.mul(x.pow(tf.scalar(3)))
+        .add(b.mul(x.square()))
+        .add(c.mul(x))
+        .add(d)
+    })
+  }
 }

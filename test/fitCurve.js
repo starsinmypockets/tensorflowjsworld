@@ -18,4 +18,11 @@ describe('Tests run', () => {
       assert(typeof res[0][0] === 'number', 'scalar value is number')
     })
   })
+
+  it('Check our polynomial function', async () => {
+    const {a, b, c, d, x, predict} = fitCurve
+    const poly = await predict(a, b, c, d, x).data()
+    console.log(poly)
+    assert('For given x, return valid y', typeof poly[0] === 'number')
+  })
 })
