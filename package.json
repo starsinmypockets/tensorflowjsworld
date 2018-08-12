@@ -1,0 +1,32 @@
+{
+  "name": "tensorjsworld",
+  "version": "1.0.0",
+  "description": "Faffing around with tensorflow js",
+  "main": "app.js",
+  "dependencies": {
+    "@tensorflow/tfjs": "^0.12.4",
+    "@tensorflow/tfjs-node": "^0.1.11"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha test/",
+    "start": "pm2 start app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/starsinmypockets/tensorflowjsworld.git"
+  },
+  "keywords": [
+    "tensorflow",
+    "tensorflowjs"
+  ],
+  "author": "Paul Walker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/starsinmypockets/tensorflowjsworld/issues"
+  },
+  "homepage": "https://github.com/starsinmypockets/tensorflowjsworld#readme"
+}
