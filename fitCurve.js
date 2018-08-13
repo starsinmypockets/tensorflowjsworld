@@ -1,21 +1,34 @@
 require('@tensorflow/tfjs-node')
 const tf = require('@tensorflow/tfjs')
-
-// Train a simple model:
-const model = tf.sequential()
-model.add(tf.layers.dense({units: 100, activation: 'relu', inputShape: [10]}))
-model.add(tf.layers.dense({units: 1, activation: 'linear'}))
-model.compile({optimizer: 'sgd', loss: 'meanSquaredError'})
-
-module.exports = {
-  model: model,
+const defaults = {
   a: tf.variable(tf.scalar(Math.random())),
   b: tf.variable(tf.scalar(Math.random())),
   c: tf.variable(tf.scalar(Math.random())),
   d: tf.variable(tf.scalar(Math.random())),
   x: tf.variable(tf.scalar(Math.random())),
+  numIterations: 75,
+  learningRate: 0.5,
+  trainingMethod: 'sgd',
+  test: 'default'
+}
 
-  predict: (a,b,c,d,x) => {
+class FitCurve {
+  constructor(options) {
+    Object.assign(this, defaults, options)
+    this.a.print() 
+    this.b.print()
+    this.c.print()
+    this.d.print()
+    this.x.print()
+  }
+
+  test() {
+    return this.test
+  }
+  
+  predict() {
+    const {a, b, c, d, x} = this
+
     return tf.tidy(() => {
       // ax^3 + bx^2 + cx + d
       return a.mul(x.pow(tf.scalar(3)))
@@ -24,4 +37,45 @@ module.exports = {
         .add(d)
     })
   }
+  
+  loss(predicted, ys) {
+    // mean squared error
+    return predicted.sub(ys).square().mean()
+  }
+
+
+  generateData(numPoints, coeff, sigma = 0.04) {
+		// https://github.com/tensorflow/tfjs-examples/blob/master/polynomial-regression-core/data.js
+		return tf.tidy(() => {
+			const [a, b, c, d] = [
+				tf.scalar(coeff.a), tf.scalar(coeff.b), tf.scalar(coeff.c),
+				tf.scalar(coeff.d)
+			];
+
+			const xs = tf.randomUniform([numPoints], -1, 1);
+
+			// Generate polynomial data
+			const three = tf.scalar(3, 'int32');
+			const ys = a.mul(xs.pow(three))
+				.add(b.mul(xs.square()))
+				.add(c.mul(xs))
+				.add(d)
+				// Add random noise to the generated data
+				// to make the problem a bit more interesting
+				.add(tf.randomNormal([numPoints], 0, sigma));
+
+			// Normalize the y values to the range 0 to 1.
+			const ymin = ys.min();
+			const ymax = ys.max();
+			const yrange = ymax.sub(ymin);
+			const ysNormalized = ys.sub(ymin).div(yrange);
+
+			return {
+				xs, 
+				ys: ysNormalized
+			};
+		}) 
+  }
 }
+
+module.exports = FitCurve
