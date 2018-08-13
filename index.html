@@ -1,31 +1,20 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.12.0"> </script>
     <script src="./fitCurve.js"></script>
-   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript">
-	async function getCoefficients() {
-	  const fc = new FitCurve()
-	  const testData = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
-	  console.log(await testData.xs.data(), testData.ys.data())
-	  const trained = await fc.train(testData.xs, testData.ys, 100)
-	}
-
-function drawPlot() {
-TESTER = document.getElementById('tester');
-
-Plotly.plot( TESTER, [{
-    x: [1, 2, 3, 4, 5],
-    y: [1, 2, 4, 8, 16] }], { 
-    margin: { t: 0 } } );
-
-/* Current Plotly.js version */
-console.log( Plotly.BUILD );
-}
-    </script>
+    <script src="./ui.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <div id="tester"></div>
-    <script>
-        drawPlot()
-    </script>
+    <div class="intro">
+        <h1>Tensor Flow Demo</h1>
+        <p>Hey, I'm <a href="http://pjwalker.net">Paul</a>. I'm a full stack javascript developer and a curious mind. I've been wanting to get my head around tensor flow and modern machine learning paradigms for a while now. The release of <a href="js.tensorflow.js">tensorflowJS</a> was just the kick in the tush that I needed.</p>
+        <p>The following demos are based on <a href="https://js.tensorflow.org/tutorials/">these tutorials</a>. Some of the code I borrowed (where I did, I made a note of it in the source) but most of it I rewrote in a TDD workflow in order to fully understand what is happening.</p>
+    </div>
+    <div class="linear-curve">
+        <h2>Fit a linear curve</h2>
+        <h3>Our model</h3>
+        <p>Our model is based on the quadratic equation with the following coefficients. We add some noise and generate a pile of training data. Here's a graph of the line and the generated training data.</p>
+        <div id="tester"></div>
+        <script>getCoefficients()</script>
+    </div>
 </body>
