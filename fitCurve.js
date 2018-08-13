@@ -21,13 +21,17 @@ class FitCurve {
     this.d.print()
     this.x.print()
   }
+  
+  optimizer(learningRate = .5) {
+    tf.train.sgd(learningRate)
+  }
 
   test() {
     return this.test
   }
   
-  predict() {
-    const {a, b, c, d, x} = this
+  predict(x) {
+    const {a, b, c, d} = this
 
     return tf.tidy(() => {
       // ax^3 + bx^2 + cx + d
@@ -37,13 +41,20 @@ class FitCurve {
         .add(d)
     })
   }
-  
+
+  // our loss function - mean squared error
   loss(predicted, ys) {
-    // mean squared error
     return predicted.sub(ys).square().mean()
   }
-
-
+  
+  // train with data
+  train(xs, ys, n) {
+    for (let i = 0; i < n; i++) {
+      const pred = this.predict(xs[i])
+      return loss(pred, ys)
+    }
+  } 
+  
   generateData(numPoints, coeff, sigma = 0.04) {
 		// https://github.com/tensorflow/tfjs-examples/blob/master/polynomial-regression-core/data.js
 		return tf.tidy(() => {

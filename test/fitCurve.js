@@ -44,7 +44,8 @@ describe('Tests run', () => {
   })
 
   it('Check our polynomial function', async () => {
-    const poly = await fc.predict().data()
+    const x = await tf.variable(tf.scalar(Math.random()))
+    const poly = await fc.predict(x).data()
     console.log(poly)
     assert('For given x, return valid y', typeof poly[0] === 'number')
   })
@@ -57,6 +58,15 @@ describe('Tests run', () => {
     // todo not sure math to validate the result
     console.log("Loss result, x, ys, mean squared error", await x.data(), await data.ys.mean().data(), lossResult)
     assert(lossResult > 0 && lossResult < 1)
+  })
 
+  it('Throw it some training data', async () => {
+    const data = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
+    const xs = await data.xs.data()
+    const ys = await data.ys.data()
+
+    const trained = await fc.train(xs, ys, 100)
+    /* console.log(trained) */
+    assert(true)
   })
 })
