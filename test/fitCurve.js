@@ -8,16 +8,6 @@ describe('Tests run', () => {
     assert(true)
 	})
 
-  it('Can instantiate class with defaults', () => {
-    const fc = new FitCurve()
-    assert(fc.test === 'default')
-  })
-  
-  it('Can instantiate class with overrides', () => {
-    const tfc = new FitCurve({test: 'My override'})
-    assert(tfc.test === 'My override')
-  })
-
   it('Check initial data', async () => {
     const res = await Promise.all([
       fc.a.data(),
@@ -49,24 +39,22 @@ describe('Tests run', () => {
     console.log(poly)
     assert('For given x, return valid y', typeof poly[0] === 'number')
   })
-
-  it('Check loss function', async () => {
-    const data = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
+  
+  it('Check loss function returns valid result', async () => {
+    const trainingData = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
     const x = await tf.variable(tf.scalar(Math.random()))
-    const l = await fc.loss(x, data.ys)
+    const l = await fc.loss(x, trainingData.ys)
     const lossResult = await l.data()
-    // todo not sure math to validate the result
-    console.log("Loss result, x, ys, mean squared error", await x.data(), await data.ys.mean().data(), lossResult)
+    
     assert(lossResult > 0 && lossResult < 1)
   })
 
   it('Throw it some training data', async () => {
-    const data = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
-    const xs = await data.xs.data()
-    const ys = await data.ys.data()
+    const testData = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
 
-    const trained = await fc.train(xs, ys, 100)
-    /* console.log(trained) */
+    console.log(await testData.xs.data(), testData.ys.data())
+
+    const trained = await fc.train(testData.xs, testData.ys, 100)
     assert(true)
   })
 })

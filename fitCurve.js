@@ -1,5 +1,7 @@
-require('@tensorflow/tfjs-node')
-const tf = require('@tensorflow/tfjs')
+// require('@tensorflow/tfjs-node')
+// import * as tf from '@tensorflow/tfjs-node'
+
+//const tf = require('@tensorflow/tfjs')
 const defaults = {
   a: tf.variable(tf.scalar(Math.random())),
   b: tf.variable(tf.scalar(Math.random())),
@@ -9,7 +11,6 @@ const defaults = {
   numIterations: 75,
   learningRate: 0.5,
   trainingMethod: 'sgd',
-  test: 'default'
 }
 
 class FitCurve {
@@ -26,10 +27,6 @@ class FitCurve {
     tf.train.sgd(learningRate)
   }
 
-  test() {
-    return this.test
-  }
-  
   predict(x) {
     const {a, b, c, d} = this
 
@@ -50,8 +47,9 @@ class FitCurve {
   // train with data
   train(xs, ys, n) {
     for (let i = 0; i < n; i++) {
-      const pred = this.predict(xs[i])
-      return loss(pred, ys)
+      const pred = this.predict(xs)
+      console.log(pred)
+      return this.loss(pred, ys)
     }
   } 
   
@@ -89,4 +87,11 @@ class FitCurve {
   }
 }
 
-module.exports = FitCurve
+async function getCoefficients() {
+  const fc = new FitCurve()
+  const testData = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
+  console.log(await testData.xs.data(), testData.ys.data())
+  const trained = await fc.train(testData.xs, testData.ys, 100)
+}
+
+// module.exports = FitCurve
