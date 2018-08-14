@@ -1,7 +1,9 @@
-// require('@tensorflow/tfjs-node')
-// import * as tf from '@tensorflow/tfjs-node'
+const isNode = (typeof module !== 'undefined')
 
-//const tf = require('@tensorflow/tfjs')
+if (isNode) {
+  var tf = require('@tensorflow/tfjs')
+}
+
 const defaults = {
   a: tf.variable(tf.scalar(Math.random())),
   b: tf.variable(tf.scalar(Math.random())),
@@ -26,7 +28,6 @@ class FitCurve {
   
   predict(x) {
     const {a, b, c, d} = this
-
     return tf.tidy(() => {
       // ax^3 + bx^2 + cx + d
       return a.mul(x.pow(tf.scalar(3)))
@@ -99,4 +100,4 @@ async function getCoefficients() {
   const trained = await fc.train(testData.xs, testData.ys, 100)
 }
 
-// module.exports = FitCurve
+if (isNode) module.exports = FitCurve

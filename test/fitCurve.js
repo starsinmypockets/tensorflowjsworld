@@ -36,7 +36,6 @@ describe('Tests run', () => {
   it('Check our polynomial function', async () => {
     const x = await tf.variable(tf.scalar(Math.random()))
     const poly = await fc.predict(x).data()
-    console.log(poly)
     assert('For given x, return valid y', typeof poly[0] === 'number')
   })
   
@@ -51,8 +50,6 @@ describe('Tests run', () => {
 
   it('Throw it some training data', async () => {
     const testData = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
-
-    console.log(await testData.xs.data(), testData.ys.data())
 
     const trained = await fc.train(testData.xs, testData.ys, 100)
     assert(true)
