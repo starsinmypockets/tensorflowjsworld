@@ -21,12 +21,9 @@ class FitCurve {
     this.c.print()
     this.d.print()
     this.x.print()
+    this.optimizer = tf.train.sgd(.5)
   }
   
-  optimizer(learningRate = .5) {
-    tf.train.sgd(learningRate)
-  }
-
   predict(x) {
     const {a, b, c, d} = this
 
@@ -45,11 +42,14 @@ class FitCurve {
   }
   
   // train with data
-  train(xs, ys, n) {
+  async train(xs, ys, n) {
     for (let i = 0; i < n; i++) {
-      const pred = this.predict(xs)
-      console.log(pred)
-      return this.loss(pred, ys)
+      this.optimizer.minimize(() => {
+        const pred = this.predict(xs)
+        return this.loss(pred, ys)
+      })
+
+      await tf.nextFrame()
     }
   } 
   
@@ -96,7 +96,6 @@ class FitCurve {
 async function getCoefficients() {
   const fc = new FitCurve()
   const testData = await fc.generateData(100, {a: -.8, b: -.2, c: .9, d: .5})
-  console.log(await testData.xs.data(), testData.ys.data())
   const trained = await fc.train(testData.xs, testData.ys, 100)
 }
 
