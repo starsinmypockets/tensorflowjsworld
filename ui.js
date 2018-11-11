@@ -14,10 +14,10 @@ async function getCoefficients() {
   let frame = 1
   
   // generate initial data series
-  const testData = await fc.generateData(100, {a: 2.8, b: -.2, c: 1.9, d: .5}, noise=true)
+  const testData = await fc.generateData(100, {a: 2.8, b: -.2, c: 1.9, d: .5}, true)
   console.log(testData)
-  const underlyingModel= await fc.generateData(10, {a: 2.8, b: -.2, c: 1.9, d: .5}, 0, noise = false)
-  const initialGuess = await fc.generateData(10, randCoefficients(), 0, noise = false)
+  const underlyingModel= await fc.generateData(10, {a: 2.8, b: -.2, c: 1.9, d: .5}, 0, false)
+  const initialGuess = await fc.generateData(10, randCoefficients(), 0, false)
 
   const xs = await testData.xs.data()
   
