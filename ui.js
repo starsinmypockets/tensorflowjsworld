@@ -1,3 +1,5 @@
+'use strict';
+
 async function getCoefficients() {
   function randCoefficients() {
     return { a: rand(), b: rand(), c: rand(), d: rand() }

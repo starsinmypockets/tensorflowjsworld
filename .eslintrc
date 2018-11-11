@@ -1,0 +1,6 @@
+{
+    "globals": {
+        "Plotly": "true"
+    },
+    "parserOptions": { "ecmaVersion": 6 }
+}
